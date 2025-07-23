@@ -45,14 +45,15 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 app.post('/api/users', async (req, res) => {
-  const { name, email,  } = req.body;
-  if (!name || !email) {
+  const { name, email, mobile } = req.body;
+  if (!name || !email || !mobile) {
     return res.status(400).send('Name and email are required');
   }
   const newUser = {
     id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
     name,
-    email
+    email,
+    mobile
   };
   users.push(newUser);
   await saveUsers();
