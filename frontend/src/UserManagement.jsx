@@ -118,7 +118,7 @@ function UserManagement() {
         />
         <input
           type="number"
-          name="Mobile no."
+          name="mobile"
           placeholder="Mobile number"
           value={form.mobile}
           onChange={handleInputChange}

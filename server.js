@@ -25,6 +25,7 @@ async function loadUsers() {
 // Save users to JSON file
 async function saveUsers() {
   try {
+    console.log('Saving users to JSON file:', users);
     await fs.writeFile(jsonFilePath, JSON.stringify(users, null, 2));
   } catch (error) {
     console.error('Error saving users to JSON file:', error);
@@ -46,6 +47,7 @@ app.get('/api/users/:id', (req, res) => {
 
 app.post('/api/users', async (req, res) => {
   const { name, email, mobile } = req.body;
+  console.log('Adding user:', { name, email, mobile });
   if (!name || !email || !mobile) {
     return res.status(400).send('Name and email are required');
   }
