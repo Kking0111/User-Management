@@ -6,7 +6,7 @@ function UserManagement() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [form, setForm] = useState({ name: '', email: '' });
+  const [form, setForm] = useState({ name: '', email: '', mobile: '' });
   const [editingUserId, setEditingUserId] = useState(null);
 
   const fetchUsers = async () => {
@@ -32,7 +32,7 @@ function UserManagement() {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email || !form.mobile) {
+    if (!form.name || !form.email) {
       setError('All fields are required');
       return;
     }
@@ -48,7 +48,7 @@ function UserManagement() {
 
   const handleEditClick = (user) => {
     setEditingUserId(user.id);
-    setForm({ name: user.name, email: user.email, mobile: user.mobile || '' });
+    setForm({ name: user.name, email: user.email, mobile: user.mobile });
     setError(null);
   };
 
