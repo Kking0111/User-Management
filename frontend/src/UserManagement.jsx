@@ -32,14 +32,14 @@ function UserManagement() {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
-    if (!form.name || !form.email) {
-      setError('Name and Email are required');
+    if (!form.name || !form.email || !form.mobile) {
+      setError('All fields are required');
       return;
     }
     setError(null);
     try {
       await axios.post('http://34.224.22.82:3000/api/users', form);
-      setForm({ name: '', email: '' });
+      setForm({ name: '', email: '', mobile: '' });
       fetchUsers();
     } catch (err) {
       setError('Failed to add user');
@@ -48,7 +48,7 @@ function UserManagement() {
 
   const handleEditClick = (user) => {
     setEditingUserId(user.id);
-    setForm({ name: user.name, email: user.email });
+    setForm({ name: user.name, email: user.email, mobile: user.mobile || '' });
     setError(null);
   };
 
@@ -62,7 +62,7 @@ function UserManagement() {
     try {
       await axios.put(`http://34.224.22.82:3000/api/users/${editingUserId}`, form);
       setEditingUserId(null);
-      setForm({ name: '', email: '' });
+      setForm({ name: '', email: '', mobile: '' });
       fetchUsers();
     } catch (err) {
       setError('Failed to update user');
@@ -71,7 +71,7 @@ function UserManagement() {
 
   const handleCancelEdit = () => {
     setEditingUserId(null);
-    setForm({ name: '', email: '' });
+    setForm({ name: '', email: '', mobile: '' });
     setError(null);
   };
 

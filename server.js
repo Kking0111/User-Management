@@ -45,7 +45,7 @@ app.get('/api/users/:id', (req, res) => {
 });
 
 app.post('/api/users', async (req, res) => {
-  const { name, email } = req.body;
+  const { name, email,  } = req.body;
   if (!name || !email) {
     return res.status(400).send('Name and email are required');
   }
