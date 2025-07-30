@@ -1,40 +1,56 @@
 import express from 'express';
 import cors from 'cors';
-import fs from 'fs/promises';
-import path from 'path';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const jsonFilePath = path.join('data', 'users.json');
-
-let users = [];
-
-// Load users from JSON file on server start
-async function loadUsers() {
-  try {
-    const data = await fs.readFile(jsonFilePath, 'utf-8');
-    users = JSON.parse(data);
-  } catch (error) {
-    console.error('Error loading users from JSON file:', error);
-    users = [];
+// In-memory user data (replaces users.json)
+let users = [
+  {
+    id: 1,
+    name: "Alicem",
+    email: "alice@example.com",
+    mobile: "74598"
+  },
+  {
+    id: 2,
+    name: "Bob",
+    email: "bob@example.com",
+    mobile: "7459873458"
+  },
+  {
+    id: 3,
+    name: "Kartik",
+    email: "kartik@gmail.com",
+    mobile: "7459873458"
+  },
+  {
+    id: 4,
+    name: "dghdio",
+    email: "dsfmi@fm.cf",
+    mobile: "67548967"
+  },
+  {
+    id: 5,
+    name: "eyphodfji",
+    email: "idsjgiogh@gfj.cdhjbh",
+    mobile: "3269873456"
+  },
+  {
+    id: 6,
+    name: "dkvngn",
+    email: "sffi@dfm.dkn",
+    mobile: "23465"
   }
-}
+];
 
-// Save users to JSON file
+// Dummy save function (no file I/O)
 async function saveUsers() {
-  try {
-    console.log('Saving users to JSON file:', users);
-    await fs.writeFile(jsonFilePath, JSON.stringify(users, null, 2));
-  } catch (error) {
-    console.error('Error saving users to JSON file:', error);
-  }
+  console.log('In-memory users updated:', users);
 }
 
-// Initialize users data
-loadUsers();
-
+// Routes
 app.get('/api/users', (req, res) => {
   res.json(users);
 });
@@ -49,7 +65,7 @@ app.post('/api/users', async (req, res) => {
   const { name, email, mobile } = req.body;
   console.log('Adding user:', { name, email, mobile });
   if (!name || !email || !mobile) {
-    return res.status(400).send('Name and email are required');
+    return res.status(400).send('Name, email, and mobile are required');
   }
   const newUser = {
     id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
