@@ -1,56 +1,27 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// In-memory user data (replaces users.json)
+// Dummy in-memory database
 let users = [
-  {
-    id: 1,
-    name: "Alicem",
-    email: "alice@example.com",
-    mobile: "74598"
-  },
-  {
-    id: 2,
-    name: "Bob",
-    email: "bob@example.com",
-    mobile: "7459873458"
-  },
-  {
-    id: 3,
-    name: "Kartik",
-    email: "kartik@gmail.com",
-    mobile: "7459873458"
-  },
-  {
-    id: 4,
-    name: "dghdio",
-    email: "dsfmi@fm.cf",
-    mobile: "67548967"
-  },
-  {
-    id: 5,
-    name: "eyphodfji",
-    email: "idsjgiogh@gfj.cdhjbh",
-    mobile: "3269873456"
-  },
-  {
-    id: 6,
-    name: "dkvngn",
-    email: "sffi@dfm.dkn",
-    mobile: "23465"
-  }
+  { id: 1, name: "Alicem", email: "alice@example.com", mobile: "74598" },
+  { id: 2, name: "Bob", email: "bob@example.com", mobile: "7459873458" },
+  { id: 3, name: "Kartik", email: "kartik@gmail.com", mobile: "7459873458" },
+  { id: 4, name: "dghdio", email: "dsfmi@fm.cf", mobile: "67548967" },
+  { id: 5, name: "eyphodfji", email: "idsjgiogh@gfj.cdhjbh", mobile: "3269873456" },
+  { id: 6, name: "dkvngn", email: "sffi@dfm.dkn", mobile: "23465" }
 ];
 
-// Dummy save function (no file I/O)
 async function saveUsers() {
   console.log('In-memory users updated:', users);
 }
 
-// Routes
+// API Routes
 app.get('/api/users', (req, res) => {
   res.json(users);
 });
@@ -63,7 +34,6 @@ app.get('/api/users/:id', (req, res) => {
 
 app.post('/api/users', async (req, res) => {
   const { name, email, mobile } = req.body;
-  console.log('Adding user:', { name, email, mobile });
   if (!name || !email || !mobile) {
     return res.status(400).send('Name, email, and mobile are required');
   }
@@ -99,6 +69,17 @@ app.delete('/api/users/:id', async (req, res) => {
   await saveUsers();
   res.json(deletedUser[0]);
 });
+
+// ---------- Serve Frontend -----------
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+// -------------------------------------
 
 const PORT = 3000;
 app.listen(PORT, () => {

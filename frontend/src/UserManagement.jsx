@@ -13,7 +13,7 @@ function UserManagement() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get('http://50.19.159.158:3000/api/users');
+      const res = await axios.get('http://localhost:3000/api/users');
       setUsers(res.data);
     } catch (err) {
       setError('Failed to fetch users');
@@ -38,7 +38,7 @@ function UserManagement() {
     }
     setError(null);
     try {
-      await axios.post('http://50.19.159.158:3000/api/users', form);
+      await axios.post('http://localhost:3000/api/users', form);
       setForm({ name: '', email: '', mobile: '' });
       fetchUsers();
     } catch (err) {
@@ -60,7 +60,7 @@ function UserManagement() {
     }
     setError(null);
     try {
-      await axios.put(`http://50.19.159.158:3000/api/users/${editingUserId}`, form);
+      await axios.put(`http://localhost:3000/api/users/${editingUserId}`, form);
       setEditingUserId(null);
       setForm({ name: '', email: '', mobile: '' });
       fetchUsers();
@@ -79,7 +79,7 @@ function UserManagement() {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     setError(null);
     try {
-      await axios.delete(`http://50.19.159.158:3000/api/users/${id}`);
+      await axios.delete(`http://localhost:3000/api/users/${id}`);
       fetchUsers();
     } catch (err) {
       setError('Failed to delete user');
